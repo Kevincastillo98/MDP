@@ -14,6 +14,7 @@ int main(){
 	int i,j,k;
 	int N; // Numero maximo de iteraciones
 	int n;
+	long int numGrande = 9999999999;
 	float matrizTransicion[100][100][100];
 	float matrizCostos[100][100];
 	float alfa;
@@ -31,6 +32,15 @@ int main(){
 	cout << "Digite el numero de estados:";
 	cin >> estados;
 
+	cout << "Ingrese el numero maximo de iteraciones:";
+	cin >> N;	
+
+	cout << "Ingresa el valor de tu error:";
+	cin >> epsilon;
+
+	cout << "Ingresa el factor de descuento:";
+	cin >> alfa;
+	
 
 	 // Se ingresa la matriz de transicion
 	cout << "Matriz de transicion" << endl;
@@ -38,7 +48,7 @@ int main(){
 	for(i=0;i < decisiones;i++){
 		for(j=0;j<decisiones;j++){
 			for(k=0;k<estados;k++){
-			cout << "Decision K =  " << i << " " << "P[" << j << "][" << k+1 << "]:";
+			cout << "Decision K =  " << i+1 << " " << "P[" << j << "][" << k+1 << "]:";
 			cin >> matrizTransicion[i][j][k];
 			}
 		}
@@ -61,7 +71,7 @@ int main(){
 			cin >> matrizCostos[i][j];
 			}
 			else if(Respuesta == 'n' || Respuesta == 'N'){
-			matrizCostos[i][j] = 9999999999;
+			matrizCostos[i][j] = numGrande;
 			}
 		}
 	}
@@ -72,7 +82,7 @@ int main(){
     // Mostramos el contenido de la matriz de transicion
 	cout << endl << "Matrices de transicion:" << endl;
 	for(i= 0;i < decisiones;i++){
-		cout << "Decision K = " << " "  << i << endl;
+		cout << "Decision K = " << " "  << i+1 << endl;
 		for(j=0;j < decisiones;j++){
 			for(k=0;k<estados;k++){
 				cout << matrizTransicion[i][j][k] << " ";
@@ -92,18 +102,8 @@ int main(){
 				}
 		 	}
       }
-
-
+	
 	cout << endl;
-
-	cout << "Ingrese el numero maximo de iteraciones:";
-	cin >> N;	
-
-	cout << "Ingresa el valor de tu error:";
-	cin >> epsilon;
-
-	cout << "Ingresa el factor de descuento:";
-	cin >> alfa;
 	
 	n = 1; 
 	
@@ -112,24 +112,46 @@ int main(){
 	//Calculo de elementos más chicos por fila	
 
 	float V[estados];
-	int P[decisiones];
-
+	int P[estados];
+	
 	for(i=0;i<estados;i++){
 			float Vminimo = matrizCostos[i][0];
+			int  Pminimo;
+
 			for(k=0;k<decisiones;k++){
 					if(matrizCostos[i][k] < Vminimo ){
 							Vminimo = matrizCostos[i][k];
+							Pminimo = k;
 					//Sacar el valor de los k para obtener P
 					}
 				}
 			V[i] = Vminimo;
+			P[i] = Pminimo+1;
+
 		}
 	
-	cout << "Primera solucion;" << endl;
+	
+
+	cout << "Primera iteracion" << endl;
+	cout << "Costos minimos: [";
 
 	for(i=0;i< estados;i++){
-		cout << V[i]  << endl;
+		cout << V[i]  << ",";
 	}
+
+	cout << "]" << endl;
+	
+	cout << "Politica aproximada: [";
+
+	for(i=0;i<estados;i++){
+		cout << P[i] << ",";
+	}
+	cout << "]" << endl;
+
+	
+	
+
+
 
 return 0;	
 }
